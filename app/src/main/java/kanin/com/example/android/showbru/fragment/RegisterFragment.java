@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,10 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import kanin.com.example.android.showbru.MainActivity;
 import kanin.com.example.android.showbru.R;
+import kanin.com.example.android.showbru.utility.AddNewUserToServer;
 import kanin.com.example.android.showbru.utility.MyAlert;
+import kanin.com.example.android.showbru.utility.MyConstant;
 
 public class RegisterFragment extends Fragment {
     @Override
@@ -60,7 +64,25 @@ public class RegisterFragment extends Fragment {
 
         } else {
 //            No Space
+            try {
 
+                MyConstant myConstant = new MyConstant();
+                AddNewUserToServer addNewUserToServer = new AddNewUserToServer(getActivity());
+                addNewUserToServer.execute(nameString,userString,passwordString,
+                        myConstant.getUrlAddUser());
+
+                String result = addNewUserToServer.get();
+                Log.d("26AprilV1","result ==> "+ result);
+
+                if (Boolean.parseBoolean(result)) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                } else {
+                    Toast.makeText(getActivity(),"Error Cannot Upload",
+                            Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
