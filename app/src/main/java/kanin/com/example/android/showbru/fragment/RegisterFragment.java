@@ -8,11 +8,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import kanin.com.example.android.showbru.MainActivity;
 import kanin.com.example.android.showbru.R;
+import kanin.com.example.android.showbru.utility.MyAlert;
 
 public class RegisterFragment extends Fragment {
     @Override
@@ -25,24 +28,62 @@ public class RegisterFragment extends Fragment {
     }   // Main Method
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.itemupload) {
+
+            uploadValueToServer();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void uploadValueToServer() {
+
+//        get value from EditText
+        EditText nameEditText = getView().findViewById(R.id.edtName);
+        EditText userEditText = getView().findViewById(R.id.edtUser);
+        EditText passEditText = getView().findViewById(R.id.edtPassword);
+
+
+//        Change Data Type From EditText to String
+        String nameString = nameEditText.getText().toString().trim();
+        String userString = userEditText.getText().toString().trim();
+        String passwordString = passEditText.getText().toString().trim();
+
+//        Check Space
+        if (nameString.isEmpty() || userString.isEmpty() || passwordString.isEmpty()) {
+//            Have Space
+            MyAlert myAlert = new MyAlert(getActivity());
+            myAlert.normalDialog("Have Space","Please Fill All Blank");
+
+
+        } else {
+//            No Space
+
+        }
+
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        inflater.inflate(R.menu.menu_register,menu);
+        inflater.inflate(R.menu.menu_register, menu);
 
 
     }
 
     private void createToolbar() {
 
-               Toolbar toolbar = getActivity().findViewById(R.id.toolbarRegister);
-        ((MainActivity)getActivity()).setSupportActionBar(toolbar);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbarRegister);
+        ((MainActivity) getActivity()).setSupportActionBar(toolbar);
 //            Setup Title
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Register");
-        ((MainActivity)getActivity()).getSupportActionBar().setSubtitle("Please File All Blank");
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Register");
+        ((MainActivity) getActivity()).getSupportActionBar().setSubtitle("Please File All Blank");
 //        Set Navigation Icon
         ((MainActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +98,7 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register,container,false);
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
         return view;
     }
 }
